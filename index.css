@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+@layer components {
+  .nav-link {
+    @apply text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors;
+  }
+  
+  .mobile-nav-link {
+    @apply py-2 px-4 block text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors;
+  }
+  
+  .dropdown-item {
+    @apply block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-blue-600 dark:hover:text-blue-400 transition-colors;
+  }
+  
+  .mobile-dropdown-item {
+    @apply block py-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors;
+  }
+  
+  .btn-primary {
+    @apply inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-all;
+  }
+  
+  .btn-secondary {
+    @apply inline-flex items-center bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 font-semibold px-6 py-3 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all;
+  }
+  
+  .lesson-content h1 {
+    @apply text-3xl font-bold mb-6;
+  }
+  
+  .lesson-content h2 {
+    @apply text-2xl font-semibold mt-8 mb-4;
+  }
+  
+  .lesson-content h3 {
+    @apply text-xl font-semibold mt-6 mb-3;
+  }
+  
+  .lesson-content p {
+    @apply mb-4 text-gray-700 dark:text-gray-300 leading-relaxed;
+  }
+  
+  .lesson-content ul {
+    @apply list-disc pl-6 mb-4 text-gray-700 dark:text-gray-300 space-y-2;
+  }
+  
+  .lesson-content ol {
+    @apply list-decimal pl-6 mb-4 text-gray-700 dark:text-gray-300 space-y-2;
+  }
+  
+  .lesson-content code {
+    @apply bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded font-mono text-sm;
+  }
+}
+
+/* Dark mode transitions */
+.dark body {
+  color-scheme: dark;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c5c5c5;
+  border-radius: 6px;
+  border: 3px solid #f1f1f1;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border: 3px solid #1f2937;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a0a0a0;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Page transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.page-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.page-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 300ms, transform 300ms;
+}
