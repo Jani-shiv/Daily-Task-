@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Task Manager & Journal</title>
+    <style>
+        /* Basic Reset & Font */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            color: #2c3e50;
+        }
+
+        header p {
+            margin: 5px 0 0;
+            color: #7f8c8d;
+            font-size: 1.1em;
+        }
+
+        /* Sections */
+        .tasks-section, .summary-section {
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #34495e;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-top: 0;
+        }
+
+        /* Form Elements */
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Important for padding and width */
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        #add-task-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        #add-task-form input {
+            flex-grow: 1;
+            margin-bottom: 0;
+        }
+
+        /* Task List */
+        #task-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        #task-list li {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+        }
+
+        #task-list li.done {
+            background-color: #e0f7e0;
+        }
+
+        #task-list li.done .task-text {
+            text-decoration: line-through;
+            color: #7f8c8d;
+        }
+
+        #task-list .task-text {
+            flex-grow: 1;
+            margin: 0 10px;
+        }
+
+        #task-list .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        #task-list .delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+        /* Summary Output */
+        #summary-output {
+            white-space: pre-wrap; /* Preserves line breaks */
+            background-color: #fdfdfd;
+            border-left: 4px solid #bdc3c7;
+            padding: 15px;
+            border-radius: 4px;
+            min-height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Daily Task Manager & Journal</h1>
+            <p id="current-date"></p>
+        </header>
+
+        <main>
+            <section class="tasks-section">
+                <h2>Today's Tasks</h2>
+                <form id="add-task-form">
+                    <input type="text" id="task-input" placeholder="Add a new task..." required>
+                    <button type="submit">Add Task</button>
+                </form>
+                <ul id="task-list">
+                    <!-- Tasks will be dynamically added here by JavaScript -->
+                </ul>
+            </section>
+
+            <section class="summary-section">
+                <h2>Daily Summary / Blog Post</h2>
+                <textarea id="summary-input" placeholder="How was your day? What did you accomplish?"></textarea>
+                <button id="save-summary-btn">Save Summary</button>
+                <h3>Saved Summary:</h3>
+                <div id="summary-output">
+                    <p>No summary saved for today.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DOM Element References ---
+            const dateElement = document.getElementById('current-date');
+            const addTaskForm = document.getElementById('add-task-form');
+            const taskInput = document.getElementById('task-input');
+            const taskList = document.getElementById('task-list');
+            const summaryInput = document.getElementById('summary-input');
+            const saveSummaryBtn = document.getElementById('save-summary-btn');
+            const summaryOutput = document.getElementById('summary-output');
+
+            // --- State Management (using localStorage for persistence) ---
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            let summary = localStorage.getItem('summary') || '';
+
+            // --- Functions ---
+
+            /** Sets the current date in the header. */
+            const setCurrentDate = () => {
+                const today = new Date();
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                dateElement.textContent = today.toLocaleDateString(undefined, options);
+            };
+
+            /** Saves the current tasks array to localStorage. */
+            const saveTasks = () => {
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+            };
+
+            /** Saves the summary text to localStorage and updates the display. */
+            const saveSummary = () => {
+                summary = summaryInput.value;
+                localStorage.setItem('summary', summary);
+                renderSummary();
+            };
+
+            /** Renders a single task to the task list in the DOM. */
+            const renderTask = (task) => {
+                const li = document.createElement('li');
+                li.dataset.id = task.id;
+                if (task.done) li.classList.add('done');
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.checked = task.done;
+                checkbox.addEventListener('change', () => toggleTask(task.id));
+
+                const span = document.createElement('span');
+                span.className = 'task-text';
+                span.textContent = task.text;
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.addEventListener('click', () => deleteTask(task.id));
+
+                li.appendChild(checkbox);
+                li.appendChild(span);
+                li.appendChild(deleteBtn);
+                taskList.appendChild(li);
+            };
+
+            /** Renders all tasks from the tasks array. */
+            const renderAllTasks = () => {
+                taskList.innerHTML = ''; // Clear existing list before rendering
+                tasks.forEach(renderTask);
+            };
+
+            /** Renders the saved summary into the output div. */
+            const renderSummary = () => {
+                summaryOutput.textContent = summary.trim() ? summary : 'No summary saved for today.';
+                summaryInput.value = summary;
+            };
+
+            /** Adds a new task to the list. */
+            const addTask = (text) => {
+                if (text.trim() === '') return;
+                const newTask = { id: Date.now(), text: text, done: false };
+                tasks.push(newTask);
+                saveTasks();
+                renderTask(newTask); // Efficiently add one task to the DOM
+                taskInput.value = '';
+                taskInput.focus();
+            };
+
+            /** Toggles the 'done' state of a task. */
+            const toggleTask = (id) => {
+                const task = tasks.find(t => t.id === id);
+                if (task) {
+                    task.done = !task.done;
+                    saveTasks();
+                    const li = taskList.querySelector(`[data-id='${id}']`);
+                    if (li) li.classList.toggle('done');
+                }
+            };
+
+            /** Deletes a task from the list. */
+            const deleteTask = (id) => {
+                tasks = tasks.filter(t => t.id !== id);
+                saveTasks();
+                const li = taskList.querySelector(`[data-id='${id}']`);
+                if (li) li.remove();
+            };
+
+            // --- Event Listeners ---
+            addTaskForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                addTask(taskInput.value);
+            });
+
+            saveSummaryBtn.addEventListener('click', saveSummary);
+
+            // --- Initial Load ---
+            const initialize = () => {
+                setCurrentDate();
+                renderAllTasks();
+                renderSummary();
+            };
+
+            initialize();
+        });
+    </script>
+</body>
+</html>
