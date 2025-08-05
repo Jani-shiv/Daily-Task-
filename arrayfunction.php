@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>PHP Array Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://gist.github.com/jani-shiv/1234567890abcdef.js"></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -318,4 +319,5 @@ document.querySelectorAll('.card-header').forEach(function(header){
 </script>
 </body>
 </html>
+
 
