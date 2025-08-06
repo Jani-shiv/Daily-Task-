@@ -27,14 +27,6 @@
 
 ---
 
-## 🎬 Overview
-
-**PHP A to Z Course** is your interactive guide to mastering PHP. With 15 structured chapters, real-world projects, and modern UI, it's everything you need to become a confident PHP developer.
-
-![Learning GIF](https://media.giphy.com/media/3o6UBpHgaXFDNAuttm/giphy.gif)
-
----
-
 ## ✨ Features
 
 | Feature                      | Description                                                                                  |
@@ -134,7 +126,6 @@ PHP-A-Z-Course/
 - **Lucide React**: Modern icon library
 - **next-themes**: Theme switching functionality
 
-![Tech Stack GIF](https://media.giphy.com/media/du3J3cXyzhj75IOgvA/giphy.gif)
 
 ---
 
@@ -149,7 +140,7 @@ PHP-A-Z-Course/
 
 ```bash
 # Clone or download the project
-git clone https://github.com/yourusername/php-a-z-course.git
+git clone https://github.com/Jani-shiv/php-a-z-course.git
 cd php-a-z-course
 
 # Install dependencies
@@ -288,5 +279,3 @@ If this course helped you:
   <b>Start your PHP journey today and become a confident web developer!</b>
 </div>
 ---
-
-![PHP Journey](https://media.giphy.com/media/3oriePqQ9bZV0Bf5lm/giphy.gif)
