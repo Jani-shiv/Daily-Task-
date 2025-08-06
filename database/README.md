@@ -1,1 +1,0 @@
-# Database Migrations and Seeders
