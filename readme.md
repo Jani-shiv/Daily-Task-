@@ -172,8 +172,6 @@ npm start
 5. **Toggle Themes:** Switch between light and dark modes
 6. **Build Projects:** Apply your skills in real-world apps
 
-![PHP Learning GIF](https://media.giphy.com/media/l41lSleq5dONDq2ze/giphy.gif)
-
 ---
 
 ## 🎯 Learning Goals
@@ -278,4 +276,4 @@ If this course helped you:
   <h3>Happy Learning! 🚀</h3>
   <b>Start your PHP journey today and become a confident web developer!</b>
 </div>
----
+
